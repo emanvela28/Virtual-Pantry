@@ -868,17 +868,17 @@ GROUP BY food_category;
 
 .print "----------------------------------------------------"
 .print "Query 6: Retrieve all food items with their location (limited fields for readability)"
-SELECT f.food_name AS "Food Item", l.location_name AS "Location", l.pantrylocation_section AS "Section"
+SELECT DISTINCT f.food_name AS "Food Item", l.location_name AS "Location", l.pantrylocation_section AS "Section"
 FROM fooditem_table f
 JOIN fooditemlocation_table fl ON f.food_item_id = fl.food_item_id
-JOIN spantrylocation_table l ON fl.location_id = l.location_id;
+JOIN pantrylocation_table l ON fl.location_id = l.location_id;
 
 .print "----------------------------------------------------"
-.print "Query 7: Retrieve orders placed by a specific customer (John Doe) with order date and status"
+.print "Query 7: Retrieve orders placed by a specific customer (Dulce Butting) with order date and status"
 SELECT o.order_id AS "Order ID", o.order_date AS "Date", o.order_status AS "Status"
 FROM order_table o
 JOIN customer_table c ON o.customer_id = c.customer_id
-WHERE c.customer_name = 'John Doe';
+WHERE c.customer_name = 'Dulce Butting';
 
 .print "----------------------------------------------------"
 .print "Query 8: Count the total number of orders"
@@ -901,7 +901,7 @@ LIMIT 1;
 
 .print "----------------------------------------------------"
 .print "Query 12: Retrieve order details for a specific order (Order ID = 1)"
-SELECT f.food_name AS "Food Item", od.orderdetail_quantity AS "Quantity"
+SELECT DISTINCT f.food_name AS "Food Item", od.orderdetail_quantity AS "Quantity"
 FROM orderdetail_table od
 JOIN fooditem_table f ON od.food_item_id = f.food_item_id
 WHERE od.order_id = 1;
@@ -915,8 +915,10 @@ UPDATE fooditem_table SET food_stockquantity = food_stockquantity - 5 WHERE food
 UPDATE order_table SET order_status = 'COMPLETED' WHERE order_id = 2;
 
 .print "----------------------------------------------------"
-.print "Query 15: Delete a customer by ID (Customer ID = 2)"
-DELETE FROM customer_table WHERE customer_id = 2;
+.print "Query: Count the number of items in Order Number 9"
+SELECT COUNT(*) AS item_count 
+FROM orderdetail_table 
+WHERE order_id = 9;
 
 .print "----------------------------------------------------"
 .print "Query 16: Retrieve the count of orders processed by each employee"
@@ -935,17 +937,17 @@ GROUP BY order_status;
 .print "Query 18: List food items with low stock (less than 10)"
 SELECT food_name AS "Food Item", food_stockquantity AS "Quantity"
 FROM fooditem_table
-WHERE food_stockquantity < 10;
+WHERE food_stockquantity < 40;
 
 .print "----------------------------------------------------"
 .print "Query 19: Retrieve the locations where 'Bread' is stored"
-SELECT l.location_name AS "Location", l.pantrylocation_section AS "Section"
+SELECT DISTINCT l.location_name AS "Location", l.pantrylocation_section AS "Section"
 FROM fooditem_table f
 JOIN fooditemlocation_table fl ON f.food_item_id = fl.food_item_id
 JOIN pantrylocation_table l ON fl.location_id = l.location_id
-WHERE f.food_name = 'Bread';
+WHERE f.food_name = 'bread';
 
 .print "----------------------------------------------------"
 .print "Query 20: Add a new food item (Orange Juice)"
 INSERT INTO fooditem_table (food_item_id, food_name, food_category, food_price, food_stockquantity, admin_id)
-VALUES (4, 'Orange Juice', 'Beverage', 3.50, 20, 1);
+VALUES (4, 'Pineapple Juice', 'beverages', 3.50, 20, 1);
