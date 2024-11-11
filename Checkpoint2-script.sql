@@ -868,10 +868,10 @@ GROUP BY food_category;
 
 .print "----------------------------------------------------"
 .print "Query 6: Retrieve all food items with their location (limited fields for readability)"
-SELECT f.food_name AS "Food Item", l.location_name AS "Location", l.pantrylocation_section AS "Section"
+SELECT Distinct f.food_name AS "Food Item", l.location_name AS "Location", l.pantrylocation_section AS "Section"
 FROM fooditem_table f
 JOIN fooditemlocation_table fl ON f.food_item_id = fl.food_item_id
-JOIN spantrylocation_table l ON fl.location_id = l.location_id;
+JOIN pantrylocation_table l ON fl.location_id = l.location_id;
 
 .print "----------------------------------------------------"
 .print "Query 7: Retrieve orders placed by a specific customer (John Doe) with order date and status"

@@ -19,3 +19,20 @@ function filterProducts(category) {
     });
     document.querySelector(`.category-button[onclick="filterProducts('${category}')"]`).classList.add('active');
 }
+
+// Function to filter products by search query
+function searchProducts() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const products = document.querySelectorAll('.product-card');
+
+    products.forEach(product => {
+        const productName = product.getAttribute('data-name');
+        
+        // Show the product if it matches the search query
+        if (productName.includes(query)) {
+            product.style.display = 'block';
+        } else {
+            product.style.display = 'none';
+        }
+    });
+}

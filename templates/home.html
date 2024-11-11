@@ -7,7 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='category.css') }}">
 </head>
 <body>
-    <h1>Product List</h1>
+    <!-- Header with Sign Out Button -->
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+        <h1>Product List</h1>
+        <a href="{{ url_for('logout') }}" class="sign-out-button">Sign Out</a>
+    </header>
+
+    <!-- Search Bar -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <input type="text" id="searchInput" placeholder="Search for products..." onkeyup="searchProducts()">
+    </div>
 
     <!-- Category Buttons -->
     <div style="text-align: center; margin-bottom: 20px;">
@@ -20,7 +29,8 @@
     <!-- Product Grid -->
     <div class="product-grid" id="productGrid">
         {% for item in items %}
-        <div class="product-card" data-category="{{ item.food_category }}">
+        <div class="product-card" data-category="{{ item.food_category }}" data-name="{{ item.food_name | lower }}">
+            <img src="{{ item.food_image_url }}" alt="{{ item.food_name }}" class="product-image">
             <h2 class="product-name">{{ item.food_name }}</h2>
             <p class="product-price">${{ item.food_price }}</p>
             <p>Stock: {{ item.food_stockquantity }}</p>
@@ -31,6 +41,8 @@
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
+
+
 
 
 
