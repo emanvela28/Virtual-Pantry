@@ -3,11 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Product List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='category.css') }}">
 </head>
 <body>
-    <h2>Welcome, {{ username }}!</h2>
-    <p>This is the homepage.</p>
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <h1>Product List</h1>
+
+    <!-- Category Buttons -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <button class="category-button active" onclick="filterProducts('all')">All</button>
+        {% for category in categories %}
+        <button class="category-button" onclick="filterProducts('{{ category }}')">{{ category }}</button>
+        {% endfor %}
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="productGrid">
+        {% for item in items %}
+        <div class="product-card" data-category="{{ item.food_category }}">
+            <h2 class="product-name">{{ item.food_name }}</h2>
+            <p class="product-price">${{ item.food_price }}</p>
+            <p>Stock: {{ item.food_stockquantity }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
+
+
+
