@@ -30,7 +30,8 @@ create table fooditem_table (
 	food_category VARCHAR(10),
 	food_price DECIMAL(4,2),
 	food_stockquantity INT,
-	admin_id VARCHAR(3)
+	admin_id VARCHAR(3),
+	food_url food_url VARCHAR(255)
 );
 
 create table order_table (
