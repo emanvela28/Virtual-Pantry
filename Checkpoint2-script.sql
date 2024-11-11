@@ -26,7 +26,7 @@ create table employee_table (
 -- Corrected inserts for fooditem_table with proper food categories
 create table fooditem_table (
 	food_item_id INT,
-	food_name VARCHAR(13),
+	food_name VARCHAR(32),
 	food_category VARCHAR(10),
 	food_price DECIMAL(4,2),
 	food_stockquantity INT,
@@ -369,79 +369,79 @@ insert into employee_table (employee_id, employee_name, employee_phone, employee
 insert into employee_table (employee_id, employee_name, employee_phone, employee_email, admin_id) values (99, 'Harlan Aldred', '714-911-3779', 'haldred2q@tripod.com', 92);
 insert into employee_table (employee_id, employee_name, employee_phone, employee_email, admin_id) values (100, 'Gabriello Peppin', '799-847-0885', 'gpeppin2r@bravesites.com', 67);
 
-
 INSERT INTO fooditem_table (food_item_id, food_name, food_category, food_price, food_stockquantity, admin_id) VALUES
-(1, 'apples', 'fruit', 8.84, 93, 3),
-(2, 'bananas', 'fruit', 5.85, 45, 19),
-(3, 'cookies', 'snacks', 6.94, 107, 95),
-(4, 'tomatoes', 'vegetables', 7.94, 148, 37),
-(5, 'chicken', 'meat', 1.72, 183, 35),
-(6, 'eggs', 'dairy', 7.63, 54, 56),
-(7, 'orange juice', 'beverages', 8.08, 175, 13),
-(8, 'lettuce', 'vegetables', 0.66, 48, 99),
-(9, 'soda', 'beverages', 7.50, 117, 47),
-(10, 'ice cream', 'desserts', 7.43, 141, 80),
-(11, 'milk', 'dairy', 6.57, 149, 17),
-(12, 'cheese', 'dairy', 2.46, 36, 87),
-(13, 'pasta', 'bakery', 3.10, 111, 45),
-(14, 'carrots', 'vegetables', 3.87, 174, 100),
-(15, 'peanut butter', 'bakery', 5.67, 82, 76),
-(16, 'yogurt', 'dairy', 5.68, 150, 16),
-(17, 'bread', 'bakery', 9.32, 173, 47),
-(18, 'salmon', 'seafood', 4.67, 165, 16),
-(19, 'cereal', 'breakfast', 3.95, 149, 44),
-(20, 'potatoes', 'vegetables', 7.14, 12, 30),
-(21, 'lettuce', 'vegetables', 1.99, 93, 90),
-(22, 'chicken', 'meat', 5.65, 61, 92),
-(23, 'ice cream', 'desserts', 1.25, 155, 39),
-(24, 'orange juice', 'beverages', 3.14, 56, 80),
-(25, 'cereal', 'breakfast', 8.85, 106, 87),
-(26, 'potatoes', 'vegetables', 3.31, 68, 86),
-(27, 'apples', 'fruit', 5.52, 148, 34),
-(28, 'tomatoes', 'vegetables', 1.84, 74, 6),
-(29, 'yogurt', 'dairy', 1.12, 180, 14),
-(30, 'carrots', 'vegetables', 6.62, 94, 87),
-(31, 'lettuce', 'vegetables', 8.88, 88, 88),
-(32, 'soda', 'beverages', 6.38, 140, 31),
-(33, 'milk', 'dairy', 9.67, 158, 70),
-(34, 'peanut butter', 'bakery', 4.36, 47, 92),
-(35, 'ice cream', 'desserts', 7.75, 133, 75),
-(36, 'cereal', 'breakfast', 6.37, 176, 17),
-(37, 'eggs', 'dairy', 2.06, 17, 18),
-(38, 'cookies', 'snacks', 4.49, 126, 65),
-(39, 'bread', 'bakery', 1.48, 154, 66),
-(40, 'orange juice', 'beverages', 6.96, 94, 40),
-(41, 'chicken', 'meat', 7.94, 200, 46),
-(42, 'cheese', 'dairy', 7.24, 198, 13),
-(43, 'pasta', 'bakery', 2.66, 149, 99),
-(44, 'tomatoes', 'vegetables', 9.65, 24, 12),
-(45, 'bread', 'bakery', 2.38, 143, 61),
-(46, 'peanut butter', 'bakery', 5.67, 82, 76),
-(47, 'yogurt', 'dairy', 7.09, 101, 20),
-(48, 'tomatoes', 'vegetables', 2.80, 183, 55),
-(49, 'cookies', 'snacks', 2.51, 156, 14),
-(50, 'apples', 'fruit', 5.88, 14, 23),
-(51, 'potatoes', 'vegetables', 3.71, 78, 67),
-(52, 'cereal', 'breakfast', 1.26, 30, 75),
-(53, 'salmon', 'seafood', 7.15, 95, 50),
-(54, 'eggs', 'dairy', 1.71, 29, 36),
-(55, 'apples', 'fruit', 8.31, 93, 86),
-(56, 'carrots', 'vegetables', 3.5, 57, 88),
-(57, 'cookies', 'snacks', 6.61, 101, 83),
-(58, 'soda', 'beverages', 4.02, 195, 97),
-(59, 'milk', 'dairy', 9.50, 190, 68),
-(60, 'salmon', 'seafood', 8.68, 191, 67),
-(61, 'ice cream', 'desserts', 4.03, 149, 85),
-(62, 'milk', 'dairy', 6.38, 93, 13),
-(63, 'lettuce', 'vegetables', 4.33, 61, 28),
-(64, 'lettuce', 'vegetables', 0.91, 62, 40),
-(65, 'bread', 'bakery', 6.49, 133, 42),
-(66, 'cereal', 'breakfast', 7.02, 124, 97),
-(67, 'apples', 'fruit', 4.32, 35, 34),
-(68, 'ice cream', 'desserts', 9.58, 123, 97),
-(69, 'lettuce', 'vegetables', 2.14, 68, 56),
-(70, 'yogurt', 'dairy', 1.12, 180, 14),
-(71, 'orange juice', 'beverages', 8.31, 93, 86);
+(1, 'apples', 'fruit', 1.99, 100, 1),
+(2, 'bananas', 'fruit', 0.59, 200, 1),
+(3, 'bread', 'bakery', 2.49, 150, 2),
+(4, 'milk', 'dairy', 3.49, 80, 2),
+(5, 'eggs', 'dairy', 2.99, 100, 3),
+(6, 'cheese', 'dairy', 4.99, 60, 3),
+(7, 'yogurt', 'dairy', 0.99, 150, 3),
+(8, 'chicken', 'meat', 5.99, 120, 4),
+(9, 'lettuce', 'vegetables', 1.49, 90, 4),
+(10, 'tomatoes', 'vegetables', 1.89, 100, 5),
+(11, 'potatoes', 'vegetables', 0.79, 200, 5),
+(12, 'carrots', 'vegetables', 0.99, 100, 6),
+(13, 'onions', 'vegetables', 1.29, 90, 6),
+(14, 'pasta', 'bakery', 1.99, 120, 7),
+(15, 'rice', 'grains', 2.99, 100, 7),
+(16, 'cereal', 'breakfast', 3.99, 80, 8),
+(17, 'cookies', 'snacks', 2.49, 90, 8),
+(18, 'chips', 'snacks', 1.99, 70, 9),
+(19, 'soda', 'beverages', 0.99, 100, 9),
+(20, 'water', 'beverages', 0.89, 200, 10),
+(21, 'coffee', 'beverages', 7.99, 50, 10),
+(22, 'tea', 'beverages', 3.49, 70, 11),
+(23, 'ice cream', 'desserts', 4.49, 60, 11),
+(24, 'frozen pizza', 'frozen', 5.99, 40, 12),
+(25, 'canned soup', 'pantry', 1.49, 120, 12),
+(26, 'peanut butter', 'pantry', 3.99, 80, 13),
+(27, 'jelly', 'pantry', 2.99, 70, 13),
+(28, 'granola bars', 'snacks', 2.99, 60, 14),
+(29, 'salad dressing', 'pantry', 3.49, 80, 14),
+(30, 'mayonnaise', 'pantry', 3.99, 70, 15),
+(31, 'ketchup', 'condiments', 2.49, 90, 15),
+(32, 'mustard', 'condiments', 1.49, 100, 16),
+(33, 'pickles', 'condiments', 3.49, 80, 16),
+(34, 'olives', 'condiments', 4.99, 50, 17),
+(35, 'salsa', 'condiments', 2.99, 60, 17),
+(36, 'tortilla chips', 'snacks', 1.99, 100, 18),
+(37, 'sour cream', 'dairy', 2.49, 80, 18),
+(38, 'ground beef', 'meat', 4.99, 70, 19),
+(39, 'pork chops', 'meat', 5.49, 50, 19),
+(40, 'bacon', 'meat', 6.99, 60, 20),
+(41, 'sausage', 'meat', 4.49, 60, 20),
+(42, 'hot dogs', 'meat', 2.99, 80, 21),
+(43, 'frozen vegetables', 'frozen', 1.99, 100, 21),
+(44, 'frozen fruit', 'frozen', 3.49, 60, 22),
+(45, 'frozen waffles', 'frozen', 2.99, 50, 22),
+(46, 'pancake mix', 'breakfast', 3.49, 70, 23),
+(47, 'syrup', 'pantry', 4.99, 60, 23),
+(48, 'butter', 'dairy', 3.99, 80, 24),
+(49, 'cream cheese', 'dairy', 2.49, 70, 24),
+(50, 'bagels', 'bakery', 3.49, 90, 25),
+(51, 'english muffins', 'bakery', 2.99, 60, 25),
+(52, 'cottage cheese', 'dairy', 3.49, 70, 26),
+(53, 'frozen dinners', 'frozen', 5.99, 40, 26),
+(54, 'frozen burritos', 'frozen', 3.99, 50, 27),
+(55, 'frozen chicken nuggets', 'frozen', 6.49, 40, 27),
+(56, 'frozen fish sticks', 'frozen', 4.49, 40, 28),
+(57, 'frozen french fries', 'frozen', 2.49, 80, 28),
+(58, 'frozen taquitos', 'frozen', 5.99, 30, 29),
+(59, 'frozen lasagna', 'frozen', 7.99, 25, 29),
+(60, 'frozen pot pies', 'frozen', 3.99, 40, 30),
+(61, 'frozen breakfast sandwiches', 'frozen', 6.99, 30, 30),
+(62, 'frozen ice cream bars', 'frozen', 4.99, 50, 31),
+(63, 'frozen fruit bars', 'frozen', 3.99, 40, 31),
+(64, 'frozen yogurt', 'frozen', 5.49, 30, 32),
+(65, 'frozen pizza rolls', 'frozen', 4.49, 40, 32),
+(66, 'frozen garlic bread', 'frozen', 3.49, 40, 33),
+(67, 'frozen onion rings', 'frozen', 3.99, 30, 33),
+(68, 'frozen mozzarella sticks', 'frozen', 5.49, 30, 34),
+(69, 'frozen jalapeno poppers', 'frozen', 5.99, 30, 34),
+(70, 'frozen corn dogs', 'frozen', 4.99, 40, 35),
+(71, 'muffins', 'bakery', 2.95, 90, 35);
+
 
 
 
@@ -836,87 +836,116 @@ INSERT INTO pantrylocation_table (location_id, location_name, pantrylocation_sec
 (100, 'Organic Bakery', 'bakery');
 
 
--- 1. Retrieve all admins
-SELECT * FROM admin_table;
 
--- 2. Retrieve all customers
-SELECT * FROM customer_table;
+.print "----------------------------------------------------"
+.print "Query 1: Retrieve admin names only"
+SELECT admin_name AS "Admin Name" FROM admin_table;
 
--- 3. Retrieve all employees and their associated admin
-SELECT e.employee_name, e.employee_email, a.admin_name
+.print "----------------------------------------------------"
+.print "Query 2: Retrieve customer names and their emails"
+SELECT customer_name AS "Customer Name", customer_email AS "Email" FROM customer_table;
+
+.print "----------------------------------------------------"
+.print "Query 3: Retrieve a count of employees associated with each admin"
+SELECT a.admin_name AS "Admin", COUNT(e.employee_id) AS "Employee Count"
 FROM employee_table e
-JOIN admin_table a ON e.admin_id = a.admin_id;
+JOIN admin_table a ON e.admin_id = a.admin_id
+GROUP BY a.admin_name;
 
--- 4. Retrieve all orders with customer names
-SELECT o.order_id, c.customer_name, o.order_date, o.order_status
+.print "----------------------------------------------------"
+.print "Query 4: Retrieve a list of unique customer names with the count of orders they have placed"
+SELECT c.customer_name AS "Customer", COUNT(o.order_id) AS "Number of Orders"
 FROM order_table o
-JOIN customer_table c ON o.customer_id = c.customer_id;
+JOIN customer_table c ON o.customer_id = c.customer_id
+GROUP BY c.customer_name;
 
--- 5. Retrieve all food items in stock
-SELECT * FROM fooditem_table WHERE food_stockquantity > 0;
+.print "----------------------------------------------------"
+.print "Query 5: Retrieve a summary count of different categories of food items in stock"
+SELECT food_category AS "Category", COUNT(*) AS "Items in Stock"
+FROM fooditem_table
+WHERE food_stockquantity > 0
+GROUP BY food_category;
 
--- 6. Retrieve all food items with their location
-SELECT f.food_name, l.location_name, l.pantrylocation_section
+.print "----------------------------------------------------"
+.print "Query 6: Retrieve all food items with their location (limited fields for readability)"
+SELECT f.food_name AS "Food Item", l.location_name AS "Location", l.pantrylocation_section AS "Section"
 FROM fooditem_table f
 JOIN fooditemlocation_table fl ON f.food_item_id = fl.food_item_id
 JOIN spantrylocation_table l ON fl.location_id = l.location_id;
 
--- 7. Retrieve orders placed by a specific customer
-SELECT o.order_id, o.order_date, o.order_status
+.print "----------------------------------------------------"
+.print "Query 7: Retrieve orders placed by a specific customer (John Doe) with order date and status"
+SELECT o.order_id AS "Order ID", o.order_date AS "Date", o.order_status AS "Status"
 FROM order_table o
 JOIN customer_table c ON o.customer_id = c.customer_id
 WHERE c.customer_name = 'John Doe';
 
--- 8. Count the total number of orders
-SELECT COUNT(*) AS total_orders FROM order_table;
+.print "----------------------------------------------------"
+.print "Query 8: Count the total number of orders"
+SELECT COUNT(*) AS "Total Orders" FROM order_table;
 
--- 9. Calculate the total stock quantity of all food items
-SELECT SUM(food_stockquantity) AS total_stock FROM fooditem_table;
+.print "----------------------------------------------------"
+.print "Query 9: Calculate the total stock quantity of all food items"
+SELECT SUM(food_stockquantity) AS "Total Stock Quantity" FROM fooditem_table;
 
--- 10. Calculate the total value of all food items in stock
-SELECT SUM(food_stockquantity * food_price) AS total_inventory_value FROM fooditem_table;
+.print "----------------------------------------------------"
+.print "Query 10: Calculate the total value of all food items in stock"
+SELECT SUM(food_stockquantity * food_price) AS "Total Inventory Value" FROM fooditem_table;
 
--- 11. Find the most expensive food item
-SELECT food_name, MAX(food_price) AS max_price FROM fooditem_table;
+.print "----------------------------------------------------"
+.print "Query 11: Find the most expensive food item"
+SELECT food_name AS "Most Expensive Item", food_price AS "Price"
+FROM fooditem_table
+ORDER BY food_price DESC
+LIMIT 1;
 
--- 12. Retrieve order details for a specific order
-SELECT od.order_detail_id, f.food_name, od.orderdetail_quantity
+.print "----------------------------------------------------"
+.print "Query 12: Retrieve order details for a specific order (Order ID = 1)"
+SELECT f.food_name AS "Food Item", od.orderdetail_quantity AS "Quantity"
 FROM orderdetail_table od
 JOIN fooditem_table f ON od.food_item_id = f.food_item_id
 WHERE od.order_id = 1;
 
--- 13. Update the stock quantity of a food item
+.print "----------------------------------------------------"
+.print "Query 13: Update the stock quantity of a food item"
 UPDATE fooditem_table SET food_stockquantity = food_stockquantity - 5 WHERE food_item_id = 1;
 
--- 14. Update an order status to 'COMPLETED'
+.print "----------------------------------------------------"
+.print "Query 14: Update an order status to 'COMPLETED' (Order ID = 2)"
 UPDATE order_table SET order_status = 'COMPLETED' WHERE order_id = 2;
 
--- 15. Delete a customer by ID
+.print "----------------------------------------------------"
+.print "Query 15: Delete a customer by ID (Customer ID = 2)"
 DELETE FROM customer_table WHERE customer_id = 2;
 
--- 16. Retrieve all orders placed by customers along with the employee who processed them
-SELECT o.order_id, c.customer_name, e.employee_name, o.order_date, o.order_status
+.print "----------------------------------------------------"
+.print "Query 16: Retrieve the count of orders processed by each employee"
+SELECT e.employee_name AS "Employee", COUNT(o.order_id) AS "Orders Processed"
 FROM order_table o
-JOIN customer_table c ON o.customer_id = c.customer_id
-JOIN employee_table e ON o.employee_id = e.employee_id;
+JOIN employee_table e ON o.employee_id = e.employee_id
+GROUP BY e.employee_name;
 
--- 17. Count the number of orders by each order status
-SELECT order_status, COUNT(*) AS status_count
+.print "----------------------------------------------------"
+.print "Query 17: Count the number of orders by each order status"
+SELECT order_status AS "Status", COUNT(*) AS "Status Count"
 FROM order_table
 GROUP BY order_status;
 
--- 18. List food items with low stock (less than 10)
-SELECT food_name, food_stockquantity
+.print "----------------------------------------------------"
+.print "Query 18: List food items with low stock (less than 10)"
+SELECT food_name AS "Food Item", food_stockquantity AS "Quantity"
 FROM fooditem_table
 WHERE food_stockquantity < 10;
 
--- 19. Retrieve the locations where 'Bread' is stored
-SELECT l.location_name, l.pantrylocation_section
+.print "----------------------------------------------------"
+.print "Query 19: Retrieve the locations where 'Bread' is stored"
+SELECT l.location_name AS "Location", l.pantrylocation_section AS "Section"
 FROM fooditem_table f
 JOIN fooditemlocation_table fl ON f.food_item_id = fl.food_item_id
 JOIN pantrylocation_table l ON fl.location_id = l.location_id
 WHERE f.food_name = 'Bread';
 
--- 20. Add a new food item
+.print "----------------------------------------------------"
+.print "Query 20: Add a new food item (Orange Juice)"
 INSERT INTO fooditem_table (food_item_id, food_name, food_category, food_price, food_stockquantity, admin_id)
 VALUES (4, 'Orange Juice', 'Beverage', 3.50, 20, 1);
