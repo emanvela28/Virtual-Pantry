@@ -1016,7 +1016,7 @@ FROM order_table
 GROUP BY order_status;
 
 .print "----------------------------------------------------"
-.print "Query 18: List food items with low stock (less than 10)"
+.print "Query 18: List food items with low stock (less than 40)"
 SELECT food_name AS "Food Item", food_stockquantity AS "Quantity"
 FROM fooditem_table
 WHERE food_stockquantity < 40;

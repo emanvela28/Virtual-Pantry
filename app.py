@@ -30,7 +30,7 @@ class FoodItem(db.Model):
     food_price = db.Column(db.Float, nullable=False)
     food_stockquantity = db.Column(db.Integer, nullable=False)
     admin_id = db.Column(db.Integer, nullable=False)
-    # food_image_url = db.Column(db.String(255))  # Add this line
+    food_url = db.Column(db.String(255))  # Add this line
 
 @login_manager.user_loader
 def load_user(customer_id):
@@ -91,17 +91,10 @@ def logout():
     return redirect(url_for('login'))
 
 
-# def seed_food_images():
-#     items = FoodItem.query.all()
-#     for item in items:
-#         if not item.food_image_url:
-#             item.food_image_url = f"https://placehold.co/150x150?text={item.food_category}"
-#     db.session.commit()
 
 
 if __name__ == "__main__":
     with app.app_context():
-        # seed_food_images()
         db.create_all()
     app.run(debug=True)
 
