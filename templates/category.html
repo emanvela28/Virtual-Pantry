@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category | capitalize }} Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='products.css') }}">
+</head>
+<body>
+    <h1>Build your cart</h1>
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <h2 class="product-name">{{ product.food_name }}</h2>
+            <p class="product-stock">Stock: {{ product.food_stock }}</p>
+            <p class="product-id">ID: {{ product.food_item_id }}</p>
+            <button class="add-button">+ Add</button>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

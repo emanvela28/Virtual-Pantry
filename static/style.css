@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    padding: 20px;
+}
+
+.category-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.category-card:hover {
+    transform: scale(1.05);
+    border-color: #0071e3;
+}
+
+.category-title {
+    font-size: 18px;
+    font-weight: bold;
+}
