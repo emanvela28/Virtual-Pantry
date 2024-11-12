@@ -92,6 +92,11 @@ def seed_food_images():
             item.food_url = f"images/{filename}"  # Assuming images are in static/images
     db.session.commit()
 
+@app.route('/checkout')
+@login_required
+def checkout():
+    # Render the checkout page (or you can set up logic for the checkout here)
+    return render_template('checkout.html')
 
 
 # Logout route
