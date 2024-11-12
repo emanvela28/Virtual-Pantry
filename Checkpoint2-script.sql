@@ -918,21 +918,26 @@ INSERT INTO pantrylocation_table (location_id, location_name, pantrylocation_sec
 (100, 'Organic Bakery', 'bakery');
 
 
-
 .print "----------------------------------------------------"
-.print "Query 1: Retrieve admin names only"
-SELECT admin_name AS "Admin Name" FROM admin_table;
-
-.print "----------------------------------------------------"
-.print "Query 2: Retrieve customer names and their emails"
+.print "Query 1: Retrieve customer names and their emails"
 SELECT customer_name AS "Customer Name", customer_email AS "Email" FROM customer_table;
 
 .print "----------------------------------------------------"
-.print "Query 3: Retrieve a count of employees associated with each admin"
-SELECT a.admin_name AS "Admin", COUNT(e.employee_id) AS "Employee Count"
+.print "Query 2: Customer with the Most Orders"
+SELECT customer_name AS "Customer Name", COUNT(order_id) AS "Order Count"
+FROM customer_table c
+JOIN order_table o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name
+ORDER BY "Order Count" DESC
+LIMIT 1;
+
+.print "----------------------------------------------------"
+.print "Query 3: Retrieve a count of unique customers associated with each employee"
+SELECT e.employee_name AS "Employee", COUNT(DISTINCT o.customer_id) AS "Customer Count"
 FROM employee_table e
-JOIN admin_table a ON e.admin_id = a.admin_id
-GROUP BY a.admin_name;
+JOIN order_table o ON e.employee_id = o.employee_id
+GROUP BY e.employee_name;
+
 
 .print "----------------------------------------------------"
 .print "Query 4: Retrieve a list of unique customer names with the count of orders they have placed"
@@ -971,8 +976,14 @@ SELECT COUNT(*) AS "Total Orders" FROM order_table;
 SELECT SUM(food_stockquantity) AS "Total Stock Quantity" FROM fooditem_table;
 
 .print "----------------------------------------------------"
-.print "Query 10: Calculate the total value of all food items in stock"
-SELECT SUM(food_stockquantity * food_price) AS "Total Inventory Value" FROM fooditem_table;
+.print "Query 10: List the top 3 employees with the most canceled orders"
+SELECT e.employee_name AS "Employee", COUNT(o.order_id) AS "Canceled Orders"
+FROM employee_table e
+JOIN order_table o ON e.employee_id = o.employee_id
+WHERE o.order_status = 'CANCELLED'
+GROUP BY e.employee_name
+ORDER BY COUNT(o.order_id) DESC
+LIMIT 3;
 
 .print "----------------------------------------------------"
 .print "Query 11: Find the most expensive food item"
