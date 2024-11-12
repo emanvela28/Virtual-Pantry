@@ -83,6 +83,17 @@ def view_category(category):
     items = FoodItem.query.filter_by(food_category=category).all()
     return render_template('category.html', category=category, items=items)
 
+def seed_food_images():
+    items = FoodItem.query.all()
+    for item in items:
+        if not item.food_url or "placehold.co" in item.food_url:  # Check for placeholder URL
+            # Use a standardized filename based on the food_name
+            filename = f"{item.food_name.lower().replace(' ', '_')}.jpg"
+            item.food_url = f"images/{filename}"  # Assuming images are in static/images
+    db.session.commit()
+
+
+
 # Logout route
 @app.route('/logout')
 @login_required

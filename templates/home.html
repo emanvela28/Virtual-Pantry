@@ -30,18 +30,19 @@
     <div class="product-grid" id="productGrid">
         {% for item in items %}
         <div class="product-card" data-category="{{ item.food_category }}" data-name="{{ item.food_name | lower }}">
-            <img src="{{ item.food_url }}" alt="{{ item.food_name }}" class="product-image">
+            <img src="{{ url_for('static', filename=item.food_url) }}" alt="{{ item.food_name }}" class="product-image">
             <h2 class="product-name">{{ item.food_name }}</h2>
             <p class="product-price">${{ item.food_price }}</p>
             <p>Stock: {{ item.food_stockquantity }}</p>
         </div>
         {% endfor %}
     </div>
-    
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
+
+
 
 
 
