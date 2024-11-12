@@ -938,7 +938,6 @@ FROM employee_table e
 JOIN order_table o ON e.employee_id = o.employee_id
 GROUP BY e.employee_name;
 
-
 .print "----------------------------------------------------"
 .print "Query 4: Retrieve a list of unique customer names with the count of orders they have placed"
 SELECT c.customer_name AS "Customer", COUNT(o.order_id) AS "Number of Orders"
@@ -991,7 +990,6 @@ SELECT food_name AS "Food Item", food_price AS "Price"
 FROM fooditem_table
 ORDER BY food_price DESC
 LIMIT 5;
-
 
 .print "----------------------------------------------------"
 .print "Query 12: Retrieve order details for a specific order (Order ID = 1)"
@@ -1084,7 +1082,7 @@ ORDER BY COUNT(o.order_id) DESC
 LIMIT 5;
 
 .print "----------------------------------------------------"
-.print "Query 26: Total quantity of each item ordered (high demand forecasting)
+.print "Query 26: Total quantity of each item ordered (high demand forecasting)"
 SELECT f.food_name AS "Food Item", SUM(od.orderdetail_quantity) AS "Total Quantity Ordered"
 FROM fooditem_table f
 JOIN orderdetail_table od ON f.food_item_id = od.food_item_id
