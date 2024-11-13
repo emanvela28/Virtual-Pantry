@@ -4,13 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <!-- Header -->
     <header class="top-container">
-        <h1>Checkout</h1>
+        <div class="welcome-message">
+            <h1>Checkout</h1>
+        </div>
+        <div class="top-right">
+            <a href="{{ url_for('customer_home') }}" class="home-button">Home</a>
+            <a href="{{ url_for('logout') }}" class="sign-out-button">Sign Out</a>
+        </div>
     </header>
-    <p>Thank you for shopping with us!</p>
-    <!-- Additional checkout information goes here -->
+
+    <!-- Checkout Content -->
+    <div class="checkout-container">
+        <h2>Review Your Order</h2>
+        
+        <div class="cart-items">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.food_name }}</td>
+                        <td>${{ item.food_price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ item.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <p><strong>Subtotal:</strong> ${{ subtotal }}</p>
+            <p><strong>Tax:</strong> ${{ tax }}</p>
+            <p><strong>Total:</strong> ${{ total }}</p>
+        </div>
+
+        <button class="place-order-button" onclick="placeOrder()">Place Order</button>
+    </div>
+
+    <script>
+        function placeOrder() {
+            fetch('/place_order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert(data.message || 'There was an issue placing your order.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred.');
+            });
+        }
+    </script>
+    
 </body>
 </html>

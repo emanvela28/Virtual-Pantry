@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Product Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <header class="top-container">
+        <div class="welcome-message">
+            <h1>Welcome, {{ current_user.employee_name }}</h1>
+        </div>
+        <div class="sign-out-container">
+            <a href="{{ url_for('logout') }}" class="sign-out-button">Sign Out</a>
+            <img src="{{ url_for('static', filename='images/order.png') }}" alt="Order Icon" class="order-icon">
+        </div>
+    </header>
+
+    <div class="product-list-container">
+        <div class="product-grid">
+            {% for item in items %}
+            <div class="product-card" data-category="{{ item.food_category }}">
+                <img src="{{ url_for('static', filename=item.food_url) }}" alt="{{ item.food_name }}" class="product-image">
+                <h2 class="product-name">{{ item.food_name }}</h2>
+                <p class="product-price">${{ item.food_price }}</p>
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock_{{ item.food_item_id }}" value="{{ item.food_stockquantity }}" min="0" onchange="updateStock('{{ item.food_item_id }}', this.value)">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function updateStock(itemId, newStock) {
+            fetch(`/update_stock/${itemId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ stock: newStock }),
+            }).then(response => response.json())
+              .then(data => alert(data.message));
+        }
+    </script>
+</body>
+</html>

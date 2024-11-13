@@ -5,45 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
-    <!-- Header Section -->
     <header class="top-container">
         <div class="welcome-message">
             <h1>Welcome, {{ current_user.customer_name }}</h1>
         </div>
-        <div class="top-right">
+        <div class="search-container">
+            <!-- Category Dropdown -->
             <div class="dropdown">
                 <button class="dropbtn">Categories</button>
                 <div class="dropdown-content">
-                    <a onclick="filterProducts('all')">All</a>
+                    <a href="javascript:void(0)" onclick="filterProducts('all')">All</a>
                     {% for category in categories %}
-                        <a onclick="filterProducts('{{ category }}')">{{ category }}</a>
+                    <a href="javascript:void(0)" onclick="filterProducts('{{ category }}')">{{ category }}</a>
                     {% endfor %}
                 </div>
             </div>
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search for products..." onkeyup="searchProducts()">
-            </div>
-            <a href="{{ url_for('checkout') }}" class="cart-icon">🛒</a>
+
+            <!-- Search Bar -->
+            <input type="text" id="searchInput" placeholder="Search for products..." onkeyup="searchProducts()">
+        </div>
+        <div class="top-right">
+            <!-- Cart Icon -->
+            <a href="{{ url_for('checkout') }}">
+                <img src="{{ url_for('static', filename='images/cart.png') }}" alt="Checkout" class="cart-icon">
+            </a>
+            <!-- Sign Out Button -->
             <a href="{{ url_for('logout') }}" class="sign-out-button">Sign Out</a>
         </div>
     </header>
 
-    <!-- Product Grid Section -->
+    <!-- Product Grid -->
     <div class="product-list-container">
-        <div class="product-grid" id="productGrid">
+        <div class="product-grid">
             {% for item in items %}
-                <div class="product-card" data-category="{{ item.food_category }}" data-name="{{ item.food_name | lower }}">
-                    <img src="{{ url_for('static', filename=item.food_url) }}" alt="{{ item.food_name }}" class="product-image">
-                    <h2 class="product-name">{{ item.food_name }}</h2>
-                    <p class="product-price">${{ item.food_price }}</p>
-                    <p>Stock: {{ item.food_stockquantity }}</p>
-                </div>
+            <div class="product-card" data-category="{{ item.food_category }}" data-name="{{ item.food_name | lower }}">
+                <img src="{{ url_for('static', filename=item.food_url) }}" alt="{{ item.food_name }}" class="product-image">
+                <h2 class="product-name">{{ item.food_name }}</h2>
+                <p class="product-price">${{ item.food_price }}</p>
+                {% if item.food_stockquantity < 10 %}
+                    <p class="low-stock" style="color: red;">Low Stock</p>
+                {% endif %}
+                <button class="add-to-cart-button" onclick="addToCart('{{ item.food_item_id }}', {{ item.food_stockquantity }})">Add to Cart</button>
+            </div>
             {% endfor %}
         </div>
     </div>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

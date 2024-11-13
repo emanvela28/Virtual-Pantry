@@ -36,3 +36,29 @@ function searchProducts() {
         }
     });
 }
+
+// Function to add an item to the cart
+function addToCart(itemId, availableStock) {
+    let quantity = prompt("Enter quantity to add:");
+    quantity = parseInt(quantity, 10);
+
+    if (isNaN(quantity) || quantity <= 0) {
+        alert("Please enter a valid quantity.");
+        return;
+    }
+
+    if (quantity > availableStock) {
+        alert("Quantity exceeds available stock.");
+        return;
+    }
+
+    fetch(`/add_to_cart/${itemId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity: quantity }),
+    }).then(response => response.json())
+      .then(data => alert(data.message));
+}
+
