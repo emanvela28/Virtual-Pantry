@@ -53,10 +53,26 @@ body {
 
 .home-button {
     background-color: #3498db; /* Different color for the Home button */
+    margin-right: 0px;
 }
 
 .home-button:hover, .sign-out-button:hover {
     opacity: 0.9;
+}
+
+.orders-icon {
+    width: 30px; /* Adjust the size if needed */
+    height: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Cart icon styling */
+.cart-icon {
+    width: 30px; /* Adjust the size if needed */
+    height: 30px;
+    margin-right: 10px;
+    cursor: pointer;
 }
 
 /* Checkout container styling */

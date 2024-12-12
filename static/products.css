@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -36,10 +36,10 @@ h1 {
 .product-image {
     width: 100%;
     max-height: 300px; /* Adjust this to control image height */
-    object-fit: contain; /* Ensures the image is fully visible within the box */
-}
+   /* object-fit: contain;  
+} */
 
-.product-name {
+/* .product-name {
     font-size: 1.1em;
     margin-bottom: 5px;
     color: #333;
@@ -63,6 +63,6 @@ h1 {
 
 .add-button:hover {
     background-color: #005bb5;
-}
+} */
 
 

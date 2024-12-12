@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <header class="top-container">
+        <div class="welcome-message">
+            <h1>Welcome, {{ current_user.customer_name }}</h1>
+        </div>
+        <div class="top-right">
+            <a href="{{ url_for('customer_home') }}" class="home-button">Home</a>
+            <a href="{{ url_for('logout') }}" class="sign-out-button">Sign Out</a>
+        </div>
+    </header>
+
+    <div class="orders-container">
+        <h2>Your Orders</h2>
+        {% if orders_with_details %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in orders_with_details %}
+                <tr>
+                    <td>{{ entry.order.order_id }}</td>
+                    <td>{{ entry.order.order_date }}</td>
+                    <td>{{ entry.order.order_status }}</td>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Food Item</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detail in entry.details %}
+                                <tr>
+                                    <td>{{ detail.food_item.food_name }}</td>
+                                    <td>{{ detail.orderdetail_quantity }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No orders found!</p>
+        {% endif %}
+    </div>
+</body>
+</html>

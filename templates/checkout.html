@@ -13,7 +13,19 @@
             <h1>Checkout</h1>
         </div>
         <div class="top-right">
+            <!-- Orders Icon -->
+            <a href="{{ url_for('orders') }}">
+                <img src="{{ url_for('static', filename='images/orders.png') }}" alt="Orders" class="orders-icon">
+            </a>
+
+            <!-- Cart Icon -->
+            <a href="{{ url_for('checkout') }}">
+                <img src="{{ url_for('static', filename='images/cart.png') }}" alt="Checkout" class="cart-icon">
+            </a>
+            <!-- Home Button -->
             <a href="{{ url_for('customer_home') }}" class="home-button">Home</a>
+
+            <!-- Sign Out Button -->
             <a href="{{ url_for('logout') }}" class="sign-out-button">Sign Out</a>
         </div>
     </header>
