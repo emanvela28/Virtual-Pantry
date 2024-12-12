@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Managed by {{ employee.employee_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <style>
+        .orders-container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 1000px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        td select, td button {
+            font-size: 1rem;
+            padding: 5px;
+        }
+
+        .no-orders {
+            text-align: center;
+            font-size: 1.2rem;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <header class="top-container">
+        <div class="welcome-message">
+            <h1>Orders Managed by {{ employee.employee_name }}</h1>
+        </div>
+        <div class="top-right">
+            {% if current_user.__class__.__name__ == "Admin" %}
+            <a href="{{ url_for('admin_home') }}" class="home-button">Home</a>
+            {% else %}
+            <a href="{{ url_for('employee_home') }}" class="home-button">Home</a>
+            {% endif %}
+            <a href="{{ url_for('logout') }}" class="sign-out-button">Sign Out</a>
+        </div>
+    </header>
+
+    <div class="orders-container">
+        <h2 style="text-align: center;">Employee Orders</h2>
+        {% if orders_with_details %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in orders_with_details %}
+                <tr>
+                    <td>{{ entry.order.order_id }}</td>
+                    <td>{{ entry.order.order_date }}</td>
+                    <td>
+                        <form action="{{ url_for('update_order_status', order_id=entry.order.order_id) }}" method="POST" style="display: inline;">
+                            <select name="order_status" required {% if entry.order.order_status == 'Cancelled' %}disabled{% endif %}>
+                                <option value="Pending" {% if entry.order.order_status == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option value="Fulfilled" {% if entry.order.order_status == 'Fulfilled' %}selected{% endif %}>Fulfilled</option>
+                                <option value="Cancelled" {% if entry.order.order_status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                            {% if entry.order.order_status != 'Cancelled' %}
+                            <button type="submit">Update</button>
+                            {% endif %}
+                        </form>
+                    </td>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Food Item</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detail in entry.details %}
+                                <tr>
+                                    <td>{{ detail.food_item.food_name }}</td>
+                                    <td>{{ detail.orderdetail_quantity }}</td>
+                                    <td>${{ detail.food_item.food_price }}</td>
+                                    <td>${{ detail.food_item.food_price * detail.orderdetail_quantity | round(2) }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-orders">No orders found!</p>
+        {% endif %}
+    </div>
+</body>
+</html>

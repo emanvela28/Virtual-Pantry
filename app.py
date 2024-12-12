@@ -17,6 +17,16 @@ login_manager.login_view = 'login'
 @app.before_request
 def initialize_cart():
     session.setdefault('cart', [])
+    
+class Admin(UserMixin, db.Model):
+    __tablename__ = 'admin_table'
+    admin_id = db.Column(db.Integer, primary_key=True)
+    admin_name = db.Column(db.String(100), nullable=False)
+    admin_email = db.Column(db.String(100), unique=True, nullable=False)
+
+    def get_id(self):
+        return f"admin-{self.admin_id}"
+    
 
 # Models
 class Customer(UserMixin, db.Model):
@@ -89,8 +99,12 @@ def load_user(user_id):
             return session.get(Customer, int(user_id))
         elif user_type == "employee":
             return session.get(Employee, int(user_id))
+        elif user_type == "admin":
+            return session.get(Admin, int(user_id))
     except ValueError:
         return None
+
+
 
 # Root route that redirects to login page
 @app.route('/')
@@ -104,23 +118,30 @@ def login():
         username = request.form['username']
         email = request.form['email']
         
-        # First, check if the user is a customer
+        # Check if the user is a customer
         customer = Customer.query.filter_by(customer_name=username, customer_email=email).first()
         if customer:
             login_user(customer)
             return redirect(url_for('customer_home'))
         
-        # If not a customer, check if they are an employee
+        # Check if the user is an employee
         employee = Employee.query.filter_by(employee_name=username, employee_email=email).first()
         if employee:
             login_user(employee)
             return redirect(url_for('employee_home'))
         
-        # If neither, flash an error message
+        # Check if the user is an admin
+        admin = Admin.query.filter_by(admin_name=username, admin_email=email).first()
+        if admin:
+            login_user(admin)
+            return redirect(url_for('admin_home'))
+        
         flash('Invalid username or email')
         return redirect(url_for('login'))
     
     return render_template('login.html')
+
+
 
 # Sign-Up route (Only for customers)
 @app.route('/signup', methods=['GET', 'POST'])
@@ -160,9 +181,19 @@ def employee_home():
 @app.route('/add_to_cart/<int:item_id>', methods=['POST'])
 @login_required
 def add_to_cart(item_id):
+    data = request.get_json()  # Get JSON data from the request
+    quantity = data.get('quantity', 1)  # Default to 1 if not provided
+
+    if quantity <= 0:
+        return jsonify({"success": False, "message": "Quantity must be greater than zero"}), 400
+
     food_item = FoodItem.query.get(item_id)
     if not food_item:
         return jsonify({"success": False, "message": "Item not found"}), 404
+
+    # Check if there's enough stock
+    if quantity > food_item.food_stockquantity:
+        return jsonify({"success": False, "message": "Insufficient stock"}), 400
 
     # Retrieve the cart from session or initialize it
     cart = session.get('cart', [])
@@ -170,22 +201,21 @@ def add_to_cart(item_id):
     # Check if the item is already in the cart
     for item in cart:
         if 'food_item_id' in item and item['food_item_id'] == item_id:
-            item['quantity'] += 1
+            item['quantity'] += quantity  # Update the quantity
             item['total'] = item['quantity'] * food_item.food_price
             session['cart'] = cart
-            return jsonify({"success": True, "message": "Item quantity updated in cart"}), 200
+            return jsonify({"success": True, "message": f"Added {quantity} more to the cart"}), 200
 
     # Add new item to the cart
     cart.append({
         'food_item_id': item_id,
         'food_name': food_item.food_name,
         'food_price': float(food_item.food_price),  # Ensure compatibility with JSON
-        'quantity': 1,
-        'total': float(food_item.food_price)
+        'quantity': quantity,
+        'total': float(food_item.food_price * quantity)
     })
     session['cart'] = cart
-    return jsonify({"success": True, "message": "Item added to cart"}), 200
-
+    return jsonify({"success": True, "message": f"Added {quantity} to the cart"}), 200
 
 
 
@@ -194,8 +224,10 @@ def add_to_cart(item_id):
 @login_required
 def checkout():
     cart_items = session.get('cart', [])
-    subtotal = sum(item['total'] for item in cart_items)
-    tax = round(subtotal * 0.07, 2)  # Example tax calculation (7%)
+    for item in cart_items:
+        item["total"] = round(item["total"], 2)
+    subtotal = round(sum(item["total"] for item in cart_items), 2)
+    tax = round(subtotal * 0.07, 2)  # Assuming a 7% tax
     total = round(subtotal + tax, 2)
     return render_template('checkout.html', cart_items=cart_items, subtotal=subtotal, tax=tax, total=total)
 
@@ -203,17 +235,31 @@ def checkout():
 @app.route('/orders')
 @login_required
 def orders():
-    orders = Order.query.filter_by(customer_id=current_user.customer_id).all()
-    orders_with_details = []
-    
-    for order in orders:
-        details = OrderDetail.query.filter_by(order_id=order.order_id).all()
-        orders_with_details.append({
-            'order': order,
-            'details': details
-        })
-    
-    return render_template('orders.html', orders_with_details=orders_with_details)
+    if isinstance(current_user, Customer):
+        orders = Order.query.filter_by(customer_id=current_user.customer_id).all()
+        orders_with_details = []
+
+        for order in orders:
+            details = OrderDetail.query.filter_by(order_id=order.order_id).all()
+            detailed_items = []
+            for detail in details:
+                food_item = FoodItem.query.get(detail.food_item_id)
+                if food_item:
+                    total_price = round(food_item.food_price * detail.orderdetail_quantity, 2)
+                    detailed_items.append({
+                        "food_name": food_item.food_name,
+                        "quantity": detail.orderdetail_quantity,
+                        "unit_price": food_item.food_price,
+                        "total_price": total_price
+                    })
+            orders_with_details.append({
+                "order": order,
+                "details": detailed_items
+            })
+
+        return render_template("orders.html", orders_with_details=orders_with_details)
+    return redirect(url_for('login'))
+
 
 
 
@@ -282,10 +328,148 @@ def order_details(order_id):
     return redirect(url_for('login'))
 
 
+
+@app.route('/update_order_status/<int:order_id>', methods=['POST'])
+@login_required
+def update_order_status(order_id):
+    if isinstance(current_user, Employee):
+        # Use `request.form` to get data from the form submission
+        new_status = request.form.get("order_status")  # Form data retrieval
+
+        if new_status not in ["Pending", "Fulfilled", "Cancelled"]:
+            return jsonify({"success": False, "message": "Invalid status"}), 400
+
+        order = Order.query.get(order_id)
+        if not order:
+            return jsonify({"success": False, "message": "Order not found"}), 404
+
+        # Prevent updates to canceled orders
+        if order.order_status == "Cancelled":
+            return jsonify({"success": False, "message": "Cannot update a canceled order"}), 403
+
+        # Restore stock if the order is canceled
+        if new_status == "Cancelled":
+            order_details = OrderDetail.query.filter_by(order_id=order_id).all()
+            for detail in order_details:
+                food_item = FoodItem.query.get(detail.food_item_id)
+                if food_item:
+                    food_item.food_stockquantity += detail.orderdetail_quantity
+                    db.session.add(food_item)
+
+        # Update order status
+        order.order_status = new_status
+        db.session.commit()
+
+        # Redirect to the employee orders page after updating
+        flash("Order status updated successfully!", "success")
+        return redirect(url_for('employee_orders'))
+    flash("Unauthorized access!", "error")
+    return redirect(url_for('login'))
+
+
+
+
+
 @app.route('/debug_cart')
 def debug_cart():
     return jsonify(session.get('cart', []))
 
+
+# Admin home page
+@app.route('/admin_home')
+@login_required
+def admin_home():
+    if isinstance(current_user, Admin):
+        food_items = FoodItem.query.all()  # Fetch all food items
+        employees = Employee.query.all()  # Fetch all employees
+        return render_template('admin_home.html', food_items=food_items, employees=employees)
+    flash("Unauthorized access!")
+    return redirect(url_for('login'))
+
+
+# View all orders for an employee
+@app.route('/employee_orders')
+@login_required
+def employee_orders():
+    if not isinstance(current_user, Employee):
+        return redirect(url_for('login'))
+
+    # Get orders associated with the current employee
+    orders = Order.query.filter_by(employee_id=current_user.employee_id).all()
+    orders_with_details = []
+
+    for order in orders:
+        details = [
+            {
+                "food_item": detail.food_item,  # Ensure this includes the food_item object
+                "orderdetail_quantity": detail.orderdetail_quantity,
+            }
+            for detail in order.order_details
+        ]
+        orders_with_details.append({"order": order, "details": details})
+
+    return render_template(
+        'employee_orders.html',
+        employee=current_user,
+        orders_with_details=orders_with_details,
+    )
+
+@app.route('/view_employee_orders/<int:employee_id>')
+@login_required
+def view_employee_orders(employee_id):
+    if not isinstance(current_user, Admin):
+        return redirect(url_for('admin_home'))
+
+    # Get orders for the specified employee
+    orders = Order.query.filter_by(employee_id=employee_id).all()
+    orders_with_details = []
+
+    for order in orders:
+        details = [
+            {
+                "food_item": detail.food_item,
+                "orderdetail_quantity": detail.orderdetail_quantity,
+            }
+            for detail in order.order_details
+        ]
+        orders_with_details.append({"order": order, "details": details})
+
+    employee = Employee.query.get(employee_id)  # Fetch the employee details
+    return render_template(
+        'employee_orders.html',
+        employee=employee,
+        orders_with_details=orders_with_details,
+    )
+
+
+
+@app.route('/view_employees')
+@login_required
+def view_employees():
+    if isinstance(current_user, Admin):
+        employees = Employee.query.all()
+        return render_template('employees.html', employees=employees)
+    flash("Unauthorized access!")
+    return redirect(url_for('login'))
+
+@app.route('/delete_employee/<int:employee_id>', methods=['POST'], endpoint='delete_employee_route')
+@login_required
+def delete_employee(employee_id):
+    if isinstance(current_user, Admin):
+        employee = Employee.query.get(employee_id)
+        if not employee:
+            flash("Employee not found!", "error")
+            return redirect(url_for('view_employees'))
+        try:
+            db.session.delete(employee)
+            db.session.commit()
+            flash("Employee deleted successfully!", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"An error occurred: {str(e)}", "error")
+    else:
+        flash("Unauthorized access!", "error")
+    return redirect(url_for('view_employees'))
 
 
 
@@ -296,20 +480,20 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-# Route for employees to update stock
 @app.route('/update_stock/<int:item_id>', methods=['POST'])
 @login_required
 def update_stock(item_id):
-    if isinstance(current_user, Employee):
+    if isinstance(current_user, Employee) or isinstance(current_user, Admin):
         data = request.get_json()
         new_stock = data.get("stock")
-        item = db.session.get(FoodItem, item_id)
+        item = FoodItem.query.get(item_id)
         if item:
             item.food_stockquantity = new_stock
             db.session.commit()
             return jsonify({"message": "Stock updated successfully!"})
         return jsonify({"message": "Item not found"}), 404
     return jsonify({"message": "Unauthorized access"}), 403
+
 
 
 if __name__ == "__main__":

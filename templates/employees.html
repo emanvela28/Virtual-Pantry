@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Employees</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <header class="top-container">
+        <div class="welcome-message">
+            <h1>Welcome, {{ current_user.admin_name }}</h1>
+        </div>
+        <div class="top-right">
+            <a href="{{ url_for('admin_home') }}" class="home-button">Home</a>
+            <a href="{{ url_for('logout') }}" class="sign-out-button">Sign Out</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="white-box">
+            <h2>Manage Employees</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in employees %}
+                    <tr>
+                        <td>{{ employee.employee_id }}</td>
+                        <td>{{ employee.employee_name }}</td>
+                        <td>{{ employee.employee_email }}</td>
+                        <td>{{ employee.employee_phone }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_employee_route', employee_id=employee.employee_id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="delete-button">Delete</button>
+                            </form>
+                            <a href="{{ url_for('view_employee_orders', employee_id=employee.employee_id) }}">View Orders</a>
+
+
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

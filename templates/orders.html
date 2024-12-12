@@ -41,17 +41,22 @@
                                 <tr>
                                     <th>Food Item</th>
                                     <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Total Price</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for detail in entry.details %}
                                 <tr>
-                                    <td>{{ detail.food_item.food_name }}</td>
-                                    <td>{{ detail.orderdetail_quantity }}</td>
+                                    <td>{{ detail.food_name }}</td>
+                                    <td>{{ detail.quantity }}</td>
+                                    <td>${{ detail.unit_price | round(2) }}</td>
+                                    <td>${{ detail.total_price | round(2) }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
+                        
                     </td>
                 </tr>
                 {% endfor %}

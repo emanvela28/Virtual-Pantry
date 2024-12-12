@@ -11,9 +11,11 @@
         <div class="welcome-message">
             <h1>Welcome, {{ current_user.employee_name }}</h1>
         </div>
-        <div class="sign-out-container">
+        <div class="top-right">
+            <a href="{{ url_for('employee_orders') }}">
+                <img src="{{ url_for('static', filename='images/orders.png') }}" alt="Orders Icon" class="orders-icon">
+            </a>
             <a href="{{ url_for('logout') }}" class="sign-out-button">Sign Out</a>
-            <img src="{{ url_for('static', filename='images/order.png') }}" alt="Order Icon" class="order-icon">
         </div>
     </header>
 
@@ -39,8 +41,19 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ stock: newStock }),
-            }).then(response => response.json())
-              .then(data => alert(data.message));
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                } else {
+                    alert("Failed to update stock. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error updating stock:", error);
+                alert("An error occurred while updating stock.");
+            });
         }
     </script>
 </body>
