@@ -92,6 +92,7 @@
                         <table>
                             <thead>
                                 <tr>
+                                    <th>Food Item Location</th>
                                     <th>Food Item</th>
                                     <th>Quantity</th>
                                     <th>Unit Price</th>
@@ -101,6 +102,7 @@
                             <tbody>
                                 {% for detail in entry.details %}
                                 <tr>
+                                    <td>{{ detail.food_item_id }}</td>
                                     <td>{{ detail.food_item.food_name }}</td>
                                     <td>{{ detail.orderdetail_quantity }}</td>
                                     <td>${{ detail.food_item.food_price }}</td>

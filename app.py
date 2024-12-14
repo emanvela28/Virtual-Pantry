@@ -247,6 +247,7 @@ def orders():
                 if food_item:
                     total_price = round(food_item.food_price * detail.orderdetail_quantity, 2)
                     detailed_items.append({
+                        "food_item_id": food_item.food_item_id,
                         "food_name": food_item.food_name,
                         "quantity": detail.orderdetail_quantity,
                         "unit_price": food_item.food_price,
@@ -401,6 +402,7 @@ def employee_orders():
     for order in orders:
         details = [
             {
+                "food_item_id": detail.food_item.food_item_id,  # Add food_item_id
                 "food_item": detail.food_item,  # Ensure this includes the food_item object
                 "orderdetail_quantity": detail.orderdetail_quantity,
             }
@@ -427,6 +429,7 @@ def view_employee_orders(employee_id):
     for order in orders:
         details = [
             {
+                "food_item_id": detail.food_item.food_item_id,
                 "food_item": detail.food_item,
                 "orderdetail_quantity": detail.orderdetail_quantity,
             }

@@ -39,6 +39,7 @@
                         <table>
                             <thead>
                                 <tr>
+                                    <th>Food Item Location</th>
                                     <th>Food Item</th>
                                     <th>Quantity</th>
                                     <th>Unit Price</th>
@@ -48,6 +49,7 @@
                             <tbody>
                                 {% for detail in entry.details %}
                                 <tr>
+                                    <td>{{ detail.food_item_id }}</td>
                                     <td>{{ detail.food_name }}</td>
                                     <td>{{ detail.quantity }}</td>
                                     <td>${{ detail.unit_price | round(2) }}</td>
